@@ -1,0 +1,290 @@
+{
+	"name": "webtest",
+	"displayName": "webtest",
+	"description": "WebdriverIO Test Extension",
+	"version": "1.3.3",
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"publisher": "ShubhenduShekharGupta",
+	"author": {
+		"name": "Shubhendu Shekhar Gupta",
+		"email": "subhendushekhargupta@gmail.com"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onView:testSuiteprovider",
+		"onLanguage:javascript",
+		"onCommand:testDataUI.start",
+		"onCommand:api.start"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"viewsWelcome": [
+			{
+				"view": "testSuiteprovider",
+				"contents": "WebTest is a test editor/explorer for WebdriverIO or any \n'describe()-it()' formatted tests. \nIn order to use WebTest features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about WebTest [read our docs](https://marketplace.visualstudio.com/items?itemName=ShubhenduShekharGupta.webtest).",
+				"when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"icon": "./icons/dep.png",
+					"title": "WebTest",
+					"id": "tests"
+				}
+			]
+		},
+		"views": {
+			"tests": [
+				{
+					"id": "testSuiteprovider",
+					"name": "Tests"
+				},
+				{
+					"id": "testDataProvider",
+					"name": "Test Data Manager"
+				},
+				{
+					"id": "envManager",
+					"name": "Environment Manager"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "testSuiteprovider.refresh",
+					"when": "view == testSuiteprovider",
+					"group": "navigation"
+				},
+				{
+					"command": "environment.open",
+					"when": "view == envManager",
+					"group": "inline"
+				},
+				{
+					"command": "environment.envRefresh",
+					"when": "view == envManager",
+					"group": "navigation"
+				},
+				{
+					"command": "testData.refresh",
+					"when": "view == testDataProvider",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "testSuiteprovider.runTest",
+					"when": "view == testSuiteprovider && viewItem == tests",
+					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.openFile",
+					"when": "view == testSuiteprovider && viewItem == tests",
+					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.addSpec",
+					"when": "view == testSuiteprovider && viewItem == testType",
+					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.removeSpec",
+					"when": "view == testSuiteprovider && viewItem == testSpec",
+					"group": "inline"
+				},
+				{
+					"command": "testData.addData",
+					"when": "view == testDataProvider && viewItem == dataType",
+					"group": "inline"
+				},
+				{
+					"command": "testData.openFile",
+					"when": "view == testDataProvider && viewItem == testDataSpec",
+					"group": "inline"
+				},
+				{
+					"command": "testData.removeData",
+					"when": "view == testDataProvider && viewItem == testDataSpec",
+					"group": "inline"
+				},
+				{
+					"command": "testData.openDataHub",
+					"when": "view == testDataProvider && viewItem == dataType",
+					"group": "inline"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "testData.removeData",
+				"title": "Remove Data File",
+				"icon": {
+					"light": "./icons/delete.png",
+					"dark": "./icons/delete.png"
+				}
+			},
+			{
+				"command": "testDataUI.start",
+				"title": "Start React Webview"
+			},
+			{
+				"command": "api.start",
+				"title": "Start API Server"
+			},
+			{
+				"command": "testSuiteprovider.runTest",
+				"title": "Run",
+				"icon": {
+					"light": "./icons/play.png",
+					"dark": "./icons/play.png"
+				}
+			},
+			{
+				"command": "testSuiteprovider.openFile",
+				"title": "Open",
+				"icon": {
+					"light": "./icons/edit.png",
+					"dark": "./icons/edit.png"
+				}
+			},
+			{
+				"command": "testSuiteprovider.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "./icons/refresh.jpg",
+					"dark": "./icons/refresh.jpg"
+				}
+			},
+			{
+				"command": "testSuiteprovider.addSpec",
+				"title": "Add Spec",
+				"icon": {
+					"light": "./icons/addtest.png",
+					"dark": "./icons/addtest.png"
+				}
+			},
+			{
+				"command": "testSuiteprovider.removeSpec",
+				"title": "Delete Spec",
+				"icon": {
+					"light": "./icons/delete.png",
+					"dark": "./icons/delete.png"
+				}
+			},
+			{
+				"command": "environment.envRefresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "./icons/refresh.jpg",
+					"dark": "./icons/refresh.jpg"
+				}
+			},
+			{
+				"command": "environment.open",
+				"title": "Open",
+				"icon": {
+					"light": "./icons/edit.png",
+					"dark": "./icons/edit.png"
+				}
+			},
+			{
+				"command": "testData.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "./icons/refresh.jpg",
+					"dark": "./icons/refresh.jpg"
+				}
+			},
+			{
+				"command": "testData.addData",
+				"title": "Add Data",
+				"icon": {
+					"light": "./icons/addtest.png",
+					"dark": "./icons/addtest.png"
+				}
+			},
+			{
+				"command": "testData.openFile",
+				"title": "Open Data",
+				"icon": {
+					"light": "./icons/edit.png",
+					"dark": "./icons/edit.png"
+				}
+			},
+			{
+				"command": "testData.openDataHub",
+				"title": "Open Data Hub",
+				"icon": {
+					"light": "./icons/datahub.png",
+					"dark": "./icons/datahub.png"
+				}
+			}
+		]
+	},
+	"repository": {
+		"type": "dev-azure",
+		"url": "https://dev.azure.com/subhendushekhargupta/WebdriverIO%20Test"
+	},
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"bugs": {
+		"url": "https://dev.azure.com/subhendushekhargupta/WebdriverIO%20Test/_workitems/create/Issue",
+		"email": "subhendushekhargupta@gmail.com"
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile && tsc -p tsconfig.json && tsc -p tsconfig.extension.json",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"start:react": "react-scripts start",
+		"build": "node ./scripts/build-non-split.js && tsc -p tsconfig.json",
+		"build:testdata": "node ./scripts/build-non-split.js && tsc -p tsconfig.json && xcopy build testdata /t /e /i /y",
+		"test:apilib": "tsc -p tsconfig.extension.json && node out\\api\\apilib.js",
+		"start:api": "tsc -p tsconfig.extension.json &&  node out\\api\\api.js"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.11",
+		"@types/glob": "^7.1.3",
+		"@types/jest": "^23.3.13",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^12.20.4",
+		"@types/react": "^16.14.4",
+		"@types/react-dom": "^16.0.5",
+		"@types/vscode": "^1.0.0",
+		"@typescript-eslint/eslint-plugin": "^4.1.1",
+		"@typescript-eslint/parser": "^4.1.1",
+		"eslint": "^5.12.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"react-bootstrap": "^1.5.1",
+		"react-scripts": "^2.1.3",
+		"rewire": "^4.0.1",
+		"typescript": "^4.0.2",
+		"vscode": "^1.1.17",
+		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {
+		"express": "^4.17.1",
+		"react": "^16.3.2",
+		"react-dom": "^16.3.2",
+		"semantic-ui-react": "^2.0.3",
+		"terser": "3.16.0",
+		"ts-node": "^9.1.1"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	],
+	"resolutions": {
+		"terser": "3.14.1"
+	}
+}

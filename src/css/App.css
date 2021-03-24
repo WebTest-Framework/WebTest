@@ -1,0 +1,61 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+::placeholder {
+  color: rgba(15, 149, 190, 0.432);
+}
+.title-cls{
+  font-size: 30px;
+  top: 8px;
+  position: relative;
+  color: #a259e4;  
+}
+.search-ip{
+  width: inherit;
+  background-color: #5e6363;
+  border: none;
+  position: relative;
+  top: -0.5em;
+}
+.dd-slt {
+    width: 15%;
+    height: 38px;
+    position: relative;
+    margin-left: 25px;
+    bottom: 15px;
+    border-radius: 3px;
+    background-color: #3e444a;
+    color: white;
+}
+.btn-cls {
+  position: relative;
+  float: right;
+  right: 5%;
+  bottom: 15px;
+}
