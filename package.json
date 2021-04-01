@@ -81,7 +81,17 @@
 				{
 					"command": "testSuiteprovider.runTest",
 					"when": "view == testSuiteprovider && viewItem == tests",
+					"group": "navigation"
+				},
+				{
+					"command": "testSuiteprovider.runTest",
+					"when": "view == testSuiteprovider && viewItem == tests",
 					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.openFile",
+					"when": "view == testSuiteprovider && viewItem == tests",
+					"group": "navigation"
 				},
 				{
 					"command": "testSuiteprovider.openFile",
@@ -91,7 +101,17 @@
 				{
 					"command": "testSuiteprovider.addSpec",
 					"when": "view == testSuiteprovider && viewItem == testType",
+					"group": "navigation"
+				},
+				{
+					"command": "testSuiteprovider.addSpec",
+					"when": "view == testSuiteprovider && viewItem == testType",
 					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.removeSpec",
+					"when": "view == testSuiteprovider && viewItem == testSpec",
+					"group": "navigation"
 				},
 				{
 					"command": "testSuiteprovider.removeSpec",
@@ -101,7 +121,17 @@
 				{
 					"command": "testData.addData",
 					"when": "view == testDataProvider && viewItem == dataType",
+					"group": "navigation"
+				},
+				{
+					"command": "testData.addData",
+					"when": "view == testDataProvider && viewItem == dataType",
 					"group": "inline"
+				},
+				{
+					"command": "testData.openFile",
+					"when": "view == testDataProvider && viewItem == testDataSpec",
+					"group": "navigation"
 				},
 				{
 					"command": "testData.openFile",
@@ -111,12 +141,27 @@
 				{
 					"command": "testData.removeData",
 					"when": "view == testDataProvider && viewItem == testDataSpec",
+					"group": "navigation"
+				},
+				{
+					"command": "testData.removeData",
+					"when": "view == testDataProvider && viewItem == testDataSpec",
 					"group": "inline"
 				},
 				{
 					"command": "testData.openDataHub",
 					"when": "view == testDataProvider && viewItem == dataType",
+					"group": "navigation"
+				},
+				{
+					"command": "testData.openDataHub",
+					"when": "view == testDataProvider && viewItem == dataType",
 					"group": "inline"
+				},
+				{
+					"command": "testSuiteprovider.openTestData",
+					"when": "view == testSuiteprovider && viewItem == tests",
+					"group": "navigation"
 				}
 			]
 		},
@@ -224,16 +269,20 @@
 					"light": "./icons/datahub.png",
 					"dark": "./icons/datahub.png"
 				}
+			},
+			{
+				"command": "testSuiteprovider.openTestData",
+				"title": "Open Related Test Data"
 			}
 		]
 	},
 	"repository": {
-		"type": "dev-azure",
-		"url": "https://dev.azure.com/subhendushekhargupta/WebdriverIO%20Test"
+		"type": "github",
+		"url": "https://github.com/WebTest-Framework/WebTest"
 	},
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"bugs": {
-		"url": "https://dev.azure.com/subhendushekhargupta/WebdriverIO%20Test/_workitems/create/Issue",
+		"url": "https://github.com/WebTest-Framework/WebTest/issues/new",
 		"email": "subhendushekhargupta@gmail.com"
 	},
 	"scripts": {

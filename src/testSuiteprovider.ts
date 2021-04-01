@@ -91,14 +91,8 @@ export class TestSuiteProvider implements vscode.TreeDataProvider<vscode.TreeIte
     constructor(testFolderKey: string) {
         testFolderName = testFolderKey;
         this.onDidChangeTreeData(() => {
-            // this.getTestType();
-            // this.getSpecFiles();
-            // this.getTests();
             this.data = this.getTestTree();
         });
-        // this.getTestType();
-        // this.getSpecFiles();
-        // this.getTests();
         this.data = this.getTestTree();
     }
 
