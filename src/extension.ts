@@ -35,7 +35,12 @@ export function activate(context: vscode.ExtensionContext) {
             ReactPanel.createOrShow(context.extensionPath);
         });
         vscode.commands.registerCommand("testSuiteprovider.runTest", (item: vscode.TreeItem) => {
-            var terminal = vscode.window.createTerminal();
+            var terminal = null;
+            if(vscode.window.terminals.length !== 0) {
+                terminal = vscode.window.terminals[0];
+            } else {
+                terminal = vscode.window.createTerminal();
+            }
             terminal.show();
             if(item.id !== undefined && vscode.workspace.rootPath !== undefined) {
                 var specFilePath = item.id.split(";")[0];
@@ -148,6 +153,21 @@ export function activate(context: vscode.ExtensionContext) {
         });
         vscode.commands.registerCommand("testData.openDataHub", (item: vscode.TreeItem) => {
             vscode.commands.executeCommand("react-webview.start");
+        });
+        vscode.commands.registerCommand("testSuiteprovider.openTestData", (item: vscode.TreeItem) => {
+            if(item.id !== undefined && vscode.workspace.rootPath !== undefined) {
+                var itemName = item.id.split(';')[1];
+                var filePath = path.join(vscode.workspace.rootPath, config.TestDataPath, config.CurrentSubDataFolder, itemName + ".json");
+                var setting: vscode.Uri = vscode.Uri.parse("file:" + filePath);
+                vscode.workspace.openTextDocument(setting).then((a: vscode.TextDocument) => {
+                    vscode.window.showTextDocument(a, 1, false).then(e => {});
+                }, (error: any) => {
+                    console.error(error);
+                    debugger;
+                });
+            } else {
+                vscode.window.showErrorMessage("Unexpected error happened... Log a defect for this.");
+            }
         });
     } else {
         vscode.window.showInformationMessage("Config file not found. Please create config as per the readme provided");
