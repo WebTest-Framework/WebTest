@@ -14,7 +14,7 @@ Used and Tested in WebdriverIO and Protractor test frameworks
 - Configure your project config file mentioned below and get your tests ready
 - Click on the edit button which will open the editor to edit the file
 - Reload button for tests explorer
-- Right click and select "Open Related Test Data" to open the test data associated to t he aprticluar test case
+- Right click and select "Open Related Test Data" to open the test data associated to t he particluar test case
 ### Test type actions
 - Icon to add new test to test types with test template
 ### Spec file actions
