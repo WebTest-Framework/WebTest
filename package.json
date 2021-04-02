@@ -2,7 +2,7 @@
 	"name": "webtest",
 	"displayName": "webtest",
 	"description": "WebdriverIO Test Extension",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
@@ -176,7 +176,7 @@
 			},
 			{
 				"command": "testDataUI.start",
-				"title": "Start React Webview"
+				"title": "Start Test Data Hub"
 			},
 			{
 				"command": "api.start",

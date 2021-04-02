@@ -4,7 +4,7 @@ Test editor/explorer for automation tests written in describe() and it() structu
 
 Used and Tested in WebdriverIO and Protractor test frameworks
 
-![Addin View](https://dev.azure.com/subhendushekhargupta/17d5f982-d7a5-4f9b-9486-1ee18cbb8360/_apis/git/repositories/a4af7c88-f5da-4d51-b9fe-bda22c76a45c/items?path=%2Ficons%2FTestViews.PNG&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=main&resolveLfs=true&%24format=octetStream&api-version=5.0 "Addin View")
+![Addin View](https://raw.githubusercontent.com/WebTest-Framework/WebTest/main/icons/TestViews.PNG?token=AKFBATEQROBIMUAO6742ELDAM2TM6 "Addin View")
 
 # Features
 
@@ -14,6 +14,7 @@ Used and Tested in WebdriverIO and Protractor test frameworks
 - Configure your project config file mentioned below and get your tests ready
 - Click on the edit button which will open the editor to edit the file
 - Reload button for tests explorer
+- Right click and select "Open Related Test Data" to open the test data associated to t he aprticluar test case
 ### Test type actions
 - Icon to add new test to test types with test template
 ### Spec file actions
@@ -48,7 +49,7 @@ Used and Tested in WebdriverIO and Protractor test frameworks
 
 - Environment Manager(View Only)
 
-![Addin View](https://dev.azure.com/subhendushekhargupta/17d5f982-d7a5-4f9b-9486-1ee18cbb8360/_apis/git/repositories/a4af7c88-f5da-4d51-b9fe-bda22c76a45c/items?path=%2Ficons%2FEnvManager.PNG&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=main&resolveLfs=true&%24format=octetStream&api-version=5.0 "Addin View")
+![Addin View](https://raw.githubusercontent.com/WebTest-Framework/WebTest/main/icons/EnvManager.PNG?token=AKFBATFXUDCVKY7N2E2FMV3AM2TPI "Addin View")
 
 # Test Explorer
 
@@ -73,7 +74,7 @@ For more config file options, click [here](#Config-file-options)
 
     <b><tests_folder_name>/<test_type_folder>/<test_sub_type_folder>/<spec_file>.js</b>
 
-    ![Test Structure](https://dev.azure.com/subhendushekhargupta/17d5f982-d7a5-4f9b-9486-1ee18cbb8360/_apis/git/repositories/a4af7c88-f5da-4d51-b9fe-bda22c76a45c/items?path=%2Ficons%2FStructure.PNG&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=main&resolveLfs=true&%24format=octetStream&api-version=5.0 "Test Structure")
+    ![Test Structure](https://raw.githubusercontent.com/WebTest-Framework/WebTest/main/icons/Structure.PNG?token=AKFBATD2KV6C7VT7WZGPQELAM2TQY "Test Structure")
 
 3. Click on the icon on the left panel of vscode.
 4. Your tests should be loaded there.

@@ -152,7 +152,8 @@ export function activate(context: vscode.ExtensionContext) {
             }
         });
         vscode.commands.registerCommand("testData.openDataHub", (item: vscode.TreeItem) => {
-            vscode.commands.executeCommand("react-webview.start");
+            vscode.commands.executeCommand('api.start');
+            ReactPanel.createOrShow(context.extensionPath);
         });
         vscode.commands.registerCommand("testSuiteprovider.openTestData", (item: vscode.TreeItem) => {
             if(item.id !== undefined && vscode.workspace.rootPath !== undefined) {

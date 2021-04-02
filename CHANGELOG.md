@@ -2,6 +2,15 @@
 
 All notable changes to the "webtest" extension will be documented in this file.
 
+### [v1.3.4] - 02-04-2021
+
+### Added
+- Added right click features for all the available user actions.
+- Linked test case tree items to relevant test data tree item by right click action.
+
+### BugFix
+- Fixed icon for deleting test data from blue run icon to delete icon
+
 ### [v1.3.2] - 14-03-2021
 
 ### Updating readme
