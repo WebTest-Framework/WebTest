@@ -84,18 +84,6 @@ class TableView extends React.Component<any, AppState, AppState> {
         return false;
     }
     handleChange(event: any, item: any) {
-        // if(event.target.checked) {
-        //     if(!this.isPresentInLocalStorage(event.target.id)) {
-        //         localStorage.setItem(event.target.id, item.dataValue);
-        //     } else {
-        //         localStorage.removeItem(event.target.id);
-        //     }
-        // } else {
-        //     localStorage.removeItem(event.target.id);
-        //     this.setState({
-        //         toOpenPopup: false
-        //     });
-        // }
         this.setState({
                     toOpenPopup: false
                 });
