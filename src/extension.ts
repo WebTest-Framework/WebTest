@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
             ReactPanel.createOrShow(context.extensionPath);
         });
         vscode.commands.registerCommand("testSuiteprovider.runTest", (item: vscode.TreeItem) => {
-            var terminal = null;
+            var terminal: vscode.Terminal = null;
             if(vscode.window.terminals.length !== 0) {
                 terminal = vscode.window.terminals[0];
             } else {

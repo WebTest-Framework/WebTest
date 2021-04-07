@@ -358,7 +358,8 @@ export class ReactPanel {
         </head>
         <body>
             <noscript>You need to enable JavaScript to run this app.</noscript>
-            <div id="root"></div>
+            <div id="root" style="position: absolute; width: 100%;"></div>
+            <div id="modal" style="position: relative; height: 0px;"></div>
             <script src="${scriptUri}"></script>
         </body>
         </html>`;

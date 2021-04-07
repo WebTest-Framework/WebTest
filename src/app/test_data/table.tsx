@@ -1,13 +1,19 @@
 import * as React from 'react';
-import '../css/App.css';
-import { Table } from 'react-bootstrap';
+import * as ReactDOM from 'react-dom';
+import '../../css/App.css';
+import { Table, Spinner } from 'react-bootstrap';
+import ModalView from '../modal';
+import { setTokenSourceMapRange } from 'typescript';
 
 var server = "localhost";
 
 interface AppState {
     error: string,
     isLoaded: boolean,
-    items: any
+    items: any,
+    toOpenPopup: boolean,
+    itemId: any,
+    itemValue: any
 }
 
 class TableView extends React.Component<any, AppState, AppState> {
@@ -16,10 +22,11 @@ class TableView extends React.Component<any, AppState, AppState> {
         this.state = {
             error: "",
             isLoaded: false,
-            items: ""
+            items: "",
+            toOpenPopup: false,
+            itemId: "",
+            itemValue: ""
         };
-        console.log("parent: " + this.props.dataFromParent);
-
     }
     componentDidMount() {
         fetch("http://" + server + ":16720/api/testdata/gettestdata")
@@ -42,7 +49,6 @@ class TableView extends React.Component<any, AppState, AppState> {
     }
     componentWillReceiveProps (newProps: any) {
         if( newProps !== this.props) {
-            console.log("New prop:" + newProps.dataFromParent);
             this.getSearchData(newProps.dataFromParent);
         }
     }
@@ -50,12 +56,10 @@ class TableView extends React.Component<any, AppState, AppState> {
         this.setState({
             isLoaded: false
         });
-        console.log(searchEntity);
         fetch("http://" + server + ":16720/api/testdata/searchtestdata?searchEntity=" + searchEntity)
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log(result);
                     this.setState({
                         error: "",
                         isLoaded: true,
@@ -80,14 +84,31 @@ class TableView extends React.Component<any, AppState, AppState> {
         return false;
     }
     handleChange(event: any, item: any) {
-        if(event.target.checked) {
-            if(!this.isPresentInLocalStorage(event.target.id)) {
-                localStorage.setItem(event.target.id, item.dataValue);
-            } else {
-                localStorage.removeItem(event.target.id);
-            }
-        } else {
-            localStorage.removeItem(event.target.id);
+        // if(event.target.checked) {
+        //     if(!this.isPresentInLocalStorage(event.target.id)) {
+        //         localStorage.setItem(event.target.id, item.dataValue);
+        //     } else {
+        //         localStorage.removeItem(event.target.id);
+        //     }
+        // } else {
+        //     localStorage.removeItem(event.target.id);
+        //     this.setState({
+        //         toOpenPopup: false
+        //     });
+        // }
+        this.setState({
+                    toOpenPopup: false
+                });
+        if(event.target.checked === true && item.dataValue.length > 1) {
+            this.setState({
+                toOpenPopup: true,
+                itemId: event.target.id,
+                itemValue: item.dataValue
+            }, () => {
+                ReactDOM.render(<ModalView toOpenPopup={this.state.toOpenPopup} itemId={this.state.itemId} itemValue={this.state.itemValue}/>,
+                    document.getElementById("modal") as HTMLElement);
+                this.setState({ toOpenPopup: false});
+            });
         }
     }
     getPrevCheckboxState(id: string) {
@@ -100,11 +121,19 @@ class TableView extends React.Component<any, AppState, AppState> {
         return false;
     }
     render() {
-        const { error, isLoaded, items } = this.state;     
+        const { error, isLoaded, items } = this.state;
+        
         if (error !== "") {
-        return <div>{error}</div>;
+            return <div>{error}</div>;
         } else if (!isLoaded) {
-        return <div>Loading...</div>;
+            return(
+            <div style={{backgroundColor: "#343a40", textAlign: "center"}}>
+                <Spinner animation="border" variant="light" />
+             </div>);
+        } else if(items.length === 0) {
+            return (
+                <div style={{textAlign: "center", backgroundColor: "#343a40", color: "white"}}>No results found</div>
+            );
         } else {
             var count = 0;
             return (
@@ -113,8 +142,8 @@ class TableView extends React.Component<any, AppState, AppState> {
                     <tr>
                         <th>#</th>
                         <th style={{width: "5%"}}>Select</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Data Key</th>
+                        <th>Data Value</th>
                     </tr>
                 </thead>
                 <tbody>

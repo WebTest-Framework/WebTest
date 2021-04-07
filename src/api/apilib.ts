@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-var rootPath: any = process.argv[2].split('=')[1];
+var rootPath: any = "C:\\Users\\shubhegu\\Desktop\\webdriverio_framework";//process.argv[2].split('=')[1];
 var config: any = require(path.join(rootPath, ".vscode", "webtest-config.json"));
 var dataPath: string = path.join(rootPath, config["TestDataPath"], config["CurrentSubDataFolder"]);
 var baseDataPath: string = path.join(rootPath, config["TestDataPath"]);
@@ -15,54 +15,70 @@ export class DataArray {
         this.dataValue.push(dataValue);
     }
 }
-//modify path for vscode
+
+export function storeInHub(dataElements: DataArray[]|DataArray) {
+    fs.writeFileSync(path.join(rootPath, ".vscode", "HubData.json"), JSON.stringify(dataElements, null, 4));
+}
+
 export function getTestData() {
-    var dataArr: DataArray[] = [];
-    var dataFileArr = fs.readdirSync(dataPath);
-    // to iterate amonf the files found
-    for(let i = 0; i < dataFileArr.length; i ++) {
-        var dataFullPath = dataPath + "\\" + dataFileArr[i];
-        if(fs.lstatSync(dataFullPath).isFile()) {
-            var data = require(dataFullPath);
-            if(Array.isArray(data)) {
-                // To iterate among array if the data in file is array type
-                for(let j = 0; j < data.length; j ++) {
-                    var dataKeys = Object.keys(data[j]);
-                    var isFound = false;
-                    // To iterate among the data keys found in the file
-                    for(let k = 0; k < dataKeys.length; k ++) {
-                        // To iterate among the stored hub data
-                        for(let l = 0; l < dataArr.length; l ++) {
-                            if(dataArr[l].dataKey === dataKeys[k]) {
-                                var isDataFound = false;
-                                // If stored data is array type
-                                if(Array.isArray(dataArr[l].dataValue)) {
-                                    // To iterate among the values of data if stored in array
-                                    for(let m = 0; m < dataArr[l].dataValue.length; m ++) {
-                                        // If already stored, go for neext iteration
-                                        if(dataArr[l].dataValue[m] === data[j][dataKeys[k]]) {
-                                            isDataFound = true;
-                                            break;
+    var dataArray: DataArray[] = [];
+    var dataArrayKeys: string[] = [];
+    var dirContents = fs.readdirSync(dataPath);
+    for(let eachDirContent of dirContents) {
+        var fullDataPath = path.join(dataPath, eachDirContent);
+        if(fs.lstatSync(fullDataPath).isFile() && eachDirContent.split('.')[1].toLocaleLowerCase() === "json") {
+            var dataInFile = require(fullDataPath);
+            if(Array.isArray(dataInFile)) {
+                for(let eachArrData of dataInFile) {
+                    var keyFound = false;
+                    var valueFound = false;
+                    var dataInFileKeys = Object.keys(eachArrData);
+                    if(dataArray.length === 0) {
+                        for(let eachFileDataKeys of dataInFileKeys) {
+                            dataArrayKeys.push(eachFileDataKeys);
+                            dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
+                        }
+                    }
+                    for(let eachFileDataKeys of dataInFileKeys) {
+                        if(dataArrayKeys.includes(eachFileDataKeys)) {
+                            keyFound = true;
+                        }
+                        if(keyFound) {
+                            for(let i = 0; i < dataArray.length; i ++) {
+                                if(eachFileDataKeys === dataArray[i].dataKey) {
+                                    var existingData = dataArray[i].dataValue;
+                                    var valueInFileKey = eachArrData[eachFileDataKeys];
+                                    if(Array.isArray(valueInFileKey)) {
+                                        for(let eachValueInFileKey of valueInFileKey) {
+                                            if(existingData.includes(eachValueInFileKey)) {
+                                            } else {
+                                                existingData.push(eachValueInFileKey);
+                                            }
                                         }
-                                    }
-                                    // If the data is not present, store it
-                                    if(!isDataFound) {
-                                        dataArr[l].dataValue.push(data[j][dataKeys[k]]);
-                                        isFound = true;
-                                        break;
+                                        dataArray[i].dataValue = existingData;
+                                    } else {
+                                        if(existingData.includes(valueInFileKey)) {
+                                        } else {
+                                            existingData.push(valueInFileKey);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if(!isFound) {
-                            dataArr.push(new DataArray(dataKeys[k], data[j][dataKeys[k]]));
+                        } else {
+                            dataArrayKeys.push(eachFileDataKeys);
+                            dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
                         }
                     }
                 }
+            } else {
+                console.log("Not an array");
             }
+        } else {
+            console.log("Directory detected : " + eachDirContent);
         }
     }
-    return dataArr;
+    storeInHub(dataArray);
+    return dataArray;
 }
 
 export function searchTestData(searchEntity: string) {
@@ -157,27 +173,3 @@ export function saveTestData(payload: SaveDataPayLoad) {
     }
     return response;
 }
-
-export function getTD() {
-    var dataArr: any[] = [];
-    var filesInBaseDataPath = fs.readdirSync(baseDataPath);
-    for(let i = 0; i < filesInBaseDataPath.length; i ++) {
-        var eachFilesBaseDataPath = path.join(baseDataPath, filesInBaseDataPath[i]);
-        if(fs.lstatSync(eachFilesBaseDataPath).isFile()) {
-            var dataInEachFiles = require(eachFilesBaseDataPath);
-            dataArr.push(dataInEachFiles);
-        } else {
-            var subTDFiles = fs.readdirSync(eachFilesBaseDataPath);
-            for(let j = 0; j < subTDFiles.length; j ++) {
-                var eachSubTDFile = path.join(eachFilesBaseDataPath, subTDFiles[j]);
-                if(fs.lstatSync(eachSubTDFile).isFile()) {
-                    var eachDataInSub = require(eachSubTDFile);
-                    dataArr.push(eachDataInSub);
-                }
-            }
-        }
-    }
-    return dataArr;
-}
-
-console.log(getTD());

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import '../css/App.css';
+import '../../css/App.css';
 import { Card, Button, Modal } from 'react-bootstrap';
-import App from './app';
 import http from 'http';
 import * as qs from 'querystring';
 

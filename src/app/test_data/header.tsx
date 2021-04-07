@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../css/App.css';
+import '../../css/App.css';
 import { Navbar, Form, FormControl} from 'react-bootstrap';
 
 export default ({handleChange, post, handleSubmit}: any) => {
@@ -11,7 +11,6 @@ export default ({handleChange, post, handleSubmit}: any) => {
         </a>
         <Form inline style={{width:"70%"}} onSubmit={handleSubmit}>
           <FormControl type="text" placeholder="Search" name="search" value={post.name} onChange={handleChange} style={{width: "inherit"}} className=" mr-sm-1 search-ip" />
-          <FormControl type="submit" style={{position: "relative", top: "-8px"}} />
         </Form>
       </Navbar>
     );
