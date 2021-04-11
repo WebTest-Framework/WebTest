@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../../css/App.css';
 import { Table, Spinner } from 'react-bootstrap';
-import ModalView from '../modal';
+import ModalView from './multiple_data_modal';
 import { setTokenSourceMapRange } from 'typescript';
 
 var server = "localhost";
@@ -87,7 +87,9 @@ class TableView extends React.Component<any, AppState, AppState> {
         this.setState({
                     toOpenPopup: false
                 });
-        if(event.target.checked === true && item.dataValue.length > 1) {
+        if(event.target.checked && item.dataValue.length <= 1) {
+            localStorage.setItem(event.target.id, item.dataValue);
+        } else if(event.target.checked === true && item.dataValue.length > 1) {
             this.setState({
                 toOpenPopup: true,
                 itemId: event.target.id,
@@ -97,6 +99,8 @@ class TableView extends React.Component<any, AppState, AppState> {
                     document.getElementById("modal") as HTMLElement);
                 this.setState({ toOpenPopup: false});
             });
+        } else if(!event.target.checked) {
+            localStorage.removeItem(event.target.id);
         }
     }
     getPrevCheckboxState(id: string) {

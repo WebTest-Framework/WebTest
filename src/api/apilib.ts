@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { exists } from 'node:fs';
 import * as path from 'path';
 
 var rootPath: any = "C:\\Users\\shubhegu\\Desktop\\webdriverio_framework";//process.argv[2].split('=')[1];
@@ -22,62 +23,66 @@ export function storeInHub(dataElements: DataArray[]|DataArray) {
 
 export function getTestData() {
     var dataArray: DataArray[] = [];
-    var dataArrayKeys: string[] = [];
     var dirContents = fs.readdirSync(dataPath);
-    for(let eachDirContent of dirContents) {
-        var fullDataPath = path.join(dataPath, eachDirContent);
-        if(fs.lstatSync(fullDataPath).isFile() && eachDirContent.split('.')[1].toLocaleLowerCase() === "json") {
-            var dataInFile = require(fullDataPath);
-            if(Array.isArray(dataInFile)) {
-                for(let eachArrData of dataInFile) {
-                    var keyFound = false;
-                    var valueFound = false;
-                    var dataInFileKeys = Object.keys(eachArrData);
-                    if(dataArray.length === 0) {
+    var dataArrayKeys: string[] = [];
+    if(fs.existsSync(path.join(rootPath, ".vscode", "HubData.json"))) {
+        dataArray = JSON.parse(fs.readFileSync(path.join(rootPath, ".vscode", "HubData.json")).toString());
+    } else {
+        for(let eachDirContent of dirContents) {
+            var fullDataPath = path.join(dataPath, eachDirContent);
+            if(fs.lstatSync(fullDataPath).isFile() && eachDirContent.split('.')[1].toLocaleLowerCase() === "json") {
+                var dataInFile = require(fullDataPath);
+                if(Array.isArray(dataInFile)) {
+                    for(let eachArrData of dataInFile) {
+                        var keyFound = false;
+                        var valueFound = false;
+                        var dataInFileKeys = Object.keys(eachArrData);
+                        if(dataArray.length === 0) {
+                            for(let eachFileDataKeys of dataInFileKeys) {
+                                dataArrayKeys.push(eachFileDataKeys);
+                                dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
+                            }
+                        }
                         for(let eachFileDataKeys of dataInFileKeys) {
-                            dataArrayKeys.push(eachFileDataKeys);
-                            dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
-                        }
-                    }
-                    for(let eachFileDataKeys of dataInFileKeys) {
-                        if(dataArrayKeys.includes(eachFileDataKeys)) {
-                            keyFound = true;
-                        }
-                        if(keyFound) {
-                            for(let i = 0; i < dataArray.length; i ++) {
-                                if(eachFileDataKeys === dataArray[i].dataKey) {
-                                    var existingData = dataArray[i].dataValue;
-                                    var valueInFileKey = eachArrData[eachFileDataKeys];
-                                    if(Array.isArray(valueInFileKey)) {
-                                        for(let eachValueInFileKey of valueInFileKey) {
-                                            if(existingData.includes(eachValueInFileKey)) {
-                                            } else {
-                                                existingData.push(eachValueInFileKey);
+                            if(dataArrayKeys.includes(eachFileDataKeys)) {
+                                keyFound = true;
+                            }
+                            if(keyFound) {
+                                for(let i = 0; i < dataArray.length; i ++) {
+                                    if(eachFileDataKeys === dataArray[i].dataKey) {
+                                        var existingData = dataArray[i].dataValue;
+                                        var valueInFileKey = eachArrData[eachFileDataKeys];
+                                        if(Array.isArray(valueInFileKey)) {
+                                            for(let eachValueInFileKey of valueInFileKey) {
+                                                if(existingData.includes(eachValueInFileKey)) {
+                                                } else {
+                                                    existingData.push(eachValueInFileKey);
+                                                }
                                             }
-                                        }
-                                        dataArray[i].dataValue = existingData;
-                                    } else {
-                                        if(existingData.includes(valueInFileKey)) {
+                                            dataArray[i].dataValue = existingData;
                                         } else {
-                                            existingData.push(valueInFileKey);
+                                            if(existingData.includes(valueInFileKey)) {
+                                            } else {
+                                                existingData.push(valueInFileKey);
+                                            }
                                         }
                                     }
                                 }
+                            } else {
+                                dataArrayKeys.push(eachFileDataKeys);
+                                dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
                             }
-                        } else {
-                            dataArrayKeys.push(eachFileDataKeys);
-                            dataArray.push(new DataArray(eachFileDataKeys, eachArrData[eachFileDataKeys]));
                         }
                     }
+                } else {
+                    console.log("Not an array");
                 }
             } else {
-                console.log("Not an array");
+                console.log("Directory detected : " + eachDirContent);
             }
-        } else {
-            console.log("Directory detected : " + eachDirContent);
         }
+        storeInHub(dataArray);
     }
-    storeInHub(dataArray);
     return dataArray;
 }
 
@@ -118,7 +123,9 @@ export function getSubTypes() {
     if(isSubTypePresent()) {
         var dirContent = fs.readdirSync(baseDataPath);
         for(let i = 0; i < dirContent.length; i ++) {
-            response.subType.push(dirContent[i]);
+            if(fs.lstatSync(path.join(baseDataPath, dirContent[i])).isDirectory()) {
+                response.subType.push(dirContent[i]);
+            }
         }
     }
     return response;
@@ -142,6 +149,10 @@ class SaveDataPayLoad {
     dataJson: string = "";
 }
 
+class AddNewKeyPayload {
+    data: any;
+}
+
 export function saveTestData(payload: SaveDataPayLoad) {
     var requestBody = {
         subDataType: payload.subDataType,
@@ -155,21 +166,120 @@ export function saveTestData(payload: SaveDataPayLoad) {
             message: ""
         },
         data: [],
+        existingKeys: [""],
         message: "",
     };
     try {
         var pathToFile: string = path.join(baseDataPath, requestBody.subDataType, requestBody.testDataFileName);
         var dataInFile = JSON.parse(fs.readFileSync(pathToFile).toString());
-        dataInFile.push(JSON.parse(requestBody.dataJson));
+        var incomingKeys = Object.keys(JSON.parse(requestBody.dataJson));
+        response.existingKeys = [];
+        var flag: boolean = false;
+        if(!Array.isArray(dataInFile)) {
+            for(let eachIncKeys of incomingKeys) {
+                if(Object.keys(dataInFile).includes(eachIncKeys)) {
+                response.existingKeys.push(eachIncKeys);
+                } else {
+                    dataInFile.push(JSON.parse(requestBody.dataJson));
+                }
+            }
+        } else {
+            for(let eachIncKeys of incomingKeys) {
+                var curKey = "";
+                for(let i = 0; i < dataInFile.length; i ++) {
+                    curKey = eachIncKeys;
+                    if(Object.keys(dataInFile[i]).includes(eachIncKeys)) {
+                        flag = true;
+                        break;
+                    } 
+                }
+                if(flag) {
+                    response.existingKeys.push(curKey);
+                } else {
+                    dataInFile.push(JSON.parse("{\"" + curKey + "\": \"" + JSON.parse(requestBody.dataJson)[curKey] + "\"}"));
+                }
+            }
+        }
         fs.writeFileSync(pathToFile, "");
         fs.writeFileSync(pathToFile, JSON.stringify(dataInFile, null, 4));
         response.success = true;
-        response.message = "Successfully updated";
+        if(response.existingKeys.length === 0) {
+            response.message = "Successfully updated";
+        } else {
+            response.message = "One or more keys already exists in the file. Rest is updated";
+        }
         response.code = 200;
     } catch(error) {
         response.success = false;
         response.error.message = error.message;
         response.code = 500;
     }
+    return response;
+}
+
+export function addNewKey(payload: AddNewKeyPayload) {
+    var requestBody = JSON.parse(payload.data);
+    
+    var pathToFile = path.join(rootPath, ".vscode", "HubData.json");
+    var response = {
+        success: false,
+        code: 0,
+        error: {
+            message: ""
+        },
+        data: [],
+        existingKeys: [""],
+        message: "",
+    };
+    response.existingKeys = [];
+    var existingData = JSON.parse(fs.readFileSync(pathToFile).toString());
+    if(Array.isArray(existingData)) {
+        var incomingKeys = Object.keys(requestBody);
+        for(let i = 0; i < incomingKeys.length; i ++) {
+            var flag: boolean = false;
+            var curKey = incomingKeys[i];
+            for(let eachExisting of existingData) {
+                if(eachExisting.dataKey === incomingKeys[i]) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) {
+                response.existingKeys.push(curKey);
+            } else {
+                var format = {
+                    dataKey: curKey,
+                    dataValue: [requestBody[curKey]]
+                };
+                existingData.push(format);
+            }
+        }
+    } else {
+        var incomingKeys = Object.keys(requestBody);
+        for(let i = 0; i < incomingKeys.length; i ++) {
+            var flag: boolean = false;
+            var curKey = incomingKeys[i];
+            if(Object.keys(existingData).includes(incomingKeys[i])) {
+                response.existingKeys.push(curKey);
+            } else {
+                var format = {
+                    dataKey: curKey,
+                    dataValue: [requestBody[curKey]]
+                };
+                existingData.push(format);
+            }
+        }
+    }
+    fs.writeFileSync(pathToFile, "");
+    fs.writeFileSync(pathToFile, JSON.stringify(existingData, null, 4));
+    response.success = true;
+    if(response.existingKeys.length === 0) {
+        response.code = 201;
+        response.message = "Successfully updated";
+    } else {
+        response.message = "One or more keys already exists in the file. Rest is updated";
+        response.code = 200;
+    }
+    existingData = null;
     return response;
 }

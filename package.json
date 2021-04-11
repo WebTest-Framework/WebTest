@@ -321,6 +321,7 @@
 		"vscode-test": "^1.4.0"
 	},
 	"dependencies": {
+		"bootstrap": "^4.6.0",
 		"express": "^4.17.1",
 		"react": "^16.3.2",
 		"react-dom": "^16.3.2",

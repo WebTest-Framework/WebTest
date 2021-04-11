@@ -59,3 +59,14 @@
   right: 5%;
   bottom: 15px;
 }
+.modal-dialog {
+  max-width: max-content;
+}
+.alert {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    position: relative;
+    left: 36%;
+}

@@ -90,7 +90,7 @@ class ModalView extends React.Component<any, AppState, AppState> {
                     </Table>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div style={{position: "relative", right: "25%"}}>
+                    <div style={{position: "relative", right: "37%"}}>
                         <input key={count++} onChange={e => this.saveAsString(e)} id="ifString" type="checkbox"/>
                         <label style={{paddingLeft: "1em"}} htmlFor="ifString">Store as string</label>
                     </div>

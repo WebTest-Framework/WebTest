@@ -30,7 +30,7 @@ app.get("/api/testdata/getSubTypes", (req: any, res: express.Response<any, any>)
     var resp = { "subs": isSubTypePresent};
     res.json(resp || {});
 });
-app.post('/process_post', urlencodedParser, (req, res) => {
+app.post('/api/testdata/savetestdata', urlencodedParser, (req, res) => {
     var requestBody = {
         subDataType: req.body.subDataType,
         testDataFileName: req.body.testDataFileName,
@@ -38,6 +38,15 @@ app.post('/process_post', urlencodedParser, (req, res) => {
     };
     res.setHeader('Access-Control-Allow-Origin','*');
     var response = apilib.saveTestData(requestBody);
+    res.statusCode = response.code;
+    res.json(response || {});
+});
+app.post('/api/testdata/addnewkey', urlencodedParser, (req, res) => {
+    var requestBody = {
+        data: req.body.data
+    };
+    res.setHeader('Access-Control-Allow-Origin','*');
+    var response = apilib.addNewKey(requestBody);
     res.statusCode = response.code;
     res.json(response || {});
 });
