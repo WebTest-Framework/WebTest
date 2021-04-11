@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import '../../css/App.css';
 import { Card, Button, Modal } from 'react-bootstrap';
 import http from 'http';
 import * as qs from 'querystring';
+import SuccessMessage from '../success_message';
 
 var server="localhost";
 
@@ -95,13 +97,13 @@ class Footer extends React.Component<any, AppState, AppState> {
         dataSets = dataSets.substring(0, dataSets.length - 1);
         dataSets += "}";
         var options = {
-        "method": "POST",
-        "hostname": server,
-        "port": "16720",
-        "path": "/process_post",
-        "headers": {
-            "content-type": "application/x-www-form-urlencoded"
-        },
+            "method": "POST",
+            "hostname": server,
+            "port": "16720",
+            "path": "/api/testdata/savetestdata",
+            "headers": {
+                "content-type": "application/x-www-form-urlencoded"
+            },
         };
     
         var req = http.request(options, function (res) {
@@ -114,13 +116,19 @@ class Footer extends React.Component<any, AppState, AppState> {
             res.on("end", function () {
                 var body = Buffer.concat(chunks);
                 console.log(body.toString());
+                var message = JSON.parse(body.toString()).message;
+                if(message === "One or more keys already exists in the file. Rest is updated") {
+                    ReactDOM.render(<SuccessMessage toShowWarning={true} message={message}/>, document.getElementById("modal") as HTMLElement);
+                } else if(message === "Successfully updated") {
+                    ReactDOM.render(<SuccessMessage toShowSuccess={true} message={message}/>, document.getElementById("modal") as HTMLElement);
+                }
+                setTimeout(function(){ window.location.reload(); }, 2000);
             });
         });
         req.write(qs.stringify({ subDataType: this.state.curSubType,
         testDataFileName: this.state.curTestDataFile,
         dataJson: dataSets }));
-        req.end();
-        window.location.reload();
+        req.end();        
     }
 
     render() {

@@ -1,6 +1,13 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import '../../css/App.css';
-import { Navbar, Form, FormControl} from 'react-bootstrap';
+import { Navbar, Form, FormControl, Dropdown} from 'react-bootstrap';
+import AddNewDataModal from './add_new_data';
+
+export function handleAddNewData() {
+  ReactDOM.render(<AddNewDataModal toOpenPopup={true}/>,
+    document.getElementById("modal") as HTMLElement);
+}
 
 export default ({handleChange, post, handleSubmit}: any) => {
     return (
@@ -10,7 +17,15 @@ export default ({handleChange, post, handleSubmit}: any) => {
           <span className="title-cls">DataHub</span>
         </a>
         <Form inline style={{width:"70%"}} onSubmit={handleSubmit}>
-          <FormControl type="text" placeholder="Search" name="search" value={post.name} onChange={handleChange} style={{width: "inherit"}} className=" mr-sm-1 search-ip" />
+          <FormControl type="text" placeholder="Search" name="search" value={post.name} onChange={handleChange} style={{width: "inherit", position: "relative", top: "1%"}} className=" mr-sm-1 search-ip" />
+          <Dropdown>
+            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
+              ...
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onSelect={e => handleAddNewData()}>Add New Data</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Form>
       </Navbar>
     );
