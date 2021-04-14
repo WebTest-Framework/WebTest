@@ -23,9 +23,10 @@ Used and Tested in WebdriverIO and Protractor test frameworks
 - Test run button
 
 ## Test Data Explorer
-- Add New Datasheet
-- Editing Existing Tests
-- Test Data Hub(consolidated view of all tests)(View Only)
+- Your different test case data(json) files can be consolidated and you can select test data key values 
+and save to particular files.
+- You can also create a new key value pair.
+- You can select data to save as string/ save as array
 
 ## Test Environment Manager
 - JSON files with consolidated test environment in below format
@@ -148,6 +149,12 @@ Currently, only json files are used to store environment. Please check the envir
             <td style="width:25%">TestFolderName</td>
             <td style="width:10%">string</td>
             <td style="width:75%">Base test folder in the root of the workspace</td>
+        </tr>
+        <tr>
+            <td style="width:25%">RunCommand</td>
+            <td style="width:10%">string</td>
+            <td style="width:75%">The run test command for your test. For WebdriverIO, the it should be
+            `npx wdio wdio.conf.js`</td>
         </tr>
         <tr>
             <td style="width:25%">RunCommandOptions</td>

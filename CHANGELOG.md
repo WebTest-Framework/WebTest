@@ -2,6 +2,15 @@
 
 All notable changes to the "webtest" extension will be documented in this file.
 
+### [v1.3.5] - 11-04-2021
+
+### Added
+- New key addition to test data hub.
+- Store as array/ Store as string in comma seperated values in data hub
+
+### BugFix
+- Fixed not opening of test data hub
+
 ### [v1.3.4] - 02-04-2021
 
 ### Added

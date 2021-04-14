@@ -37,14 +37,19 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("testSuiteprovider.runTest", (item: vscode.TreeItem) => {
             let terminal: vscode.Terminal;
             if(vscode.window.terminals.length !== 0) {
-                terminal = vscode.window.terminals[0];
+                terminal = vscode.window.terminals[vscode.window.terminals.length - 1];
             } else {
                 terminal = vscode.window.createTerminal();
             }
             terminal.show();
             if(item.id !== undefined && vscode.workspace.rootPath !== undefined) {
                 var specFilePath = item.id.split(";")[0];
-                var command = "npx wdio wdio.conf.js";
+                var command = "";
+                if(config.RunCommand) {
+                    command = config.RunCommand;
+                } else {
+                    command = "npx wdio wdio.conf.js";
+                }
                 if(config.RunCommandOptions !== undefined) {
                     for(let i = 0 ; i < config.RunCommandOptions.length; i ++) {
                         command += " " + config.RunCommandOptions[i];
