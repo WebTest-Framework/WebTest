@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { exists } from 'node:fs';
 import * as path from 'path';
 
-var rootPath: any = "C:\\Users\\shubhegu\\Desktop\\webdriverio_framework";//process.argv[2].split('=')[1];
+var rootPath: any = process.argv[2].split('=')[1];
 var config: any = require(path.join(rootPath, ".vscode", "webtest-config.json"));
 var dataPath: string = path.join(rootPath, config["TestDataPath"], config["CurrentSubDataFolder"]);
 var baseDataPath: string = path.join(rootPath, config["TestDataPath"]);
